@@ -1,0 +1,36 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+
+  test:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        racket-variant: ['CS', 'BC']
+        racket-version: [ '8.0', 'current' ]
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: Bogdanp/setup-racket@v1.1
+      with:
+        architecture: 'x64'
+        distribution: 'full'
+        variant: ${{ matrix.racket-variant }}
+        version: ${{ matrix.racket-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ python cmake         
+    - name: Compile binaryen
+      run: |
+        git clone https://github.com/WebAssembly/binaryen.git
+        cd binaryen
+        cmake .
+        make -j
+        sudo make install
+    - name: Run test
+      run: racket test/wingo-raw.rkt test/wingo_fact.scm
+      
