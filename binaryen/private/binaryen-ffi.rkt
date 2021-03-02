@@ -491,6 +491,51 @@
   RefIsData
   RefIsI31)
 
+;;
+;; Many of the operations have a well-defined name and define a setter and getter for it.
+;; This macros hopefully make it easier to create the ffi bindings.
+;;
+(define-syntax (defbinaryen*-get stx)
+  (syntax-case stx (:)
+    [(_ struct field [ extra-args ... ] field-type)
+     (with-syntax ([getter (format-id #'field "Binaryen~aGet~a"
+                                      (syntax->datum #'struct) (syntax->datum #'field))])
+       #'(defbinaryen* getter : BinaryenExpressionRef extra-args ... -> field-type))]
+    [(_ struct field field-type)
+     #'(defbinaryen*-get struct field [] field-type)]))
+    
+(define-syntax (defbinaryen*-get/set stx)
+  (syntax-case stx (:)
+    [(_ struct field [ extra-args ... ] field-type)
+     (with-syntax ([getter (format-id #'field "Binaryen~aGet~a"
+                                      (syntax->datum #'struct) (syntax->datum #'field))]
+                   [setter (format-id #'field "Binaryen~aSet~a"
+                                      (syntax->datum #'struct) (syntax->datum #'field))])
+       #'(begin
+           (defbinaryen* getter : BinaryenExpressionRef extra-args ... -> field-type)
+           (defbinaryen* setter : BinaryenExpressionRef extra-args ... field-type -> _void)))]
+    [(_ struct field field-type)
+     #'(defbinaryen*-get/set struct field [] field-type)]))
+         
+(define-syntax (defbinaryen*-get/set-fields stx)
+  (syntax-case stx ()
+    [(_ struct fields/types ...)
+     #`(begin
+         #,@(for/list ([ft (in-list (syntax->list #'(fields/types ...)))])
+              (cond
+                [(= (length (syntax->datum ft)) 2)
+                 #`(defbinaryen*-get/set struct
+                     #,(first (syntax->datum ft))
+                     #,(second (syntax->datum ft)))]
+                [(= (length (syntax->datum ft)) 3)
+                 #`(defbinaryen*-get/set struct
+                     #,(first (syntax->datum ft))
+                     #,(second (syntax->datum ft))
+                     #,(third (syntax->datum ft)))]
+                [else
+                 (raise-syntax-error "unknown number of fields in fields/types list")])))]))
+         
+
 (define BinaryenExpressionRef (_cpointer/null 'BinaryenExpressionRef))
 
 (defbinaryen* BinaryenBlock :
@@ -717,15 +762,14 @@
 (defbinaryen* BinaryenExpressionCopy : BinaryenExpressionRef BinaryenModuleRef
   -> BinaryenExpressionRef)
 
-(defbinaryen* BinaryenBlockGetName : BinaryenExpressionRef -> _string)
 
-(defbinaryen* BinaryenBlockSetName : BinaryenExpressionRef _string -> _void)
+;; BinaryenBlock
+
+(defbinaryen*-get/set-fields Block
+  (Name _string)
+  (ChildAt [BinaryenIndex] BinaryenExpressionRef))
 
 (defbinaryen* BinaryenBlockGetNumChildren : BinaryenExpressionRef -> BinaryenIndex)
-
-(defbinaryen* BinaryenBlockGetChildAt : BinaryenExpressionRef BinaryenIndex -> BinaryenExpressionRef)
-
-(defbinaryen* BinaryenBlockSetChildAt : BinaryenExpressionRef BinaryenIndex BinaryenExpressionRef -> _void)
 
 (defbinaryen* BinaryenBlockAppendChild : BinaryenExpressionRef BinaryenExpressionRef -> BinaryenIndex)
 
@@ -1018,37 +1062,6 @@
 (defbinaryen* BinaryenReturnSetValue : BinaryenExpressionRef BinaryenExpressionRef -> _void)
 
 ; AtomicRMW
-
-(define-syntax (defbinaryen*-get stx)
-  (syntax-case stx (:)
-    [(_ struct field [ extra-args ... ] field-type)
-     (with-syntax ([getter (format-id #'field "Binaryen~aGet~a"
-                                      (syntax->datum #'struct) (syntax->datum #'field))])
-       #'(defbinaryen* getter : BinaryenExpressionRef extra-args ... -> field-type))]
-    [(_ struct field field-type)
-     #'(defbinaryen*-get struct field [] field-type)]))
-    
-(define-syntax (defbinaryen*-get/set stx)
-  (syntax-case stx (:)
-    [(_ struct field [ extra-args ... ] field-type)
-     (with-syntax ([getter (format-id #'field "Binaryen~aGet~a"
-                                      (syntax->datum #'struct) (syntax->datum #'field))]
-                   [setter (format-id #'field "Binaryen~aSet~a"
-                                      (syntax->datum #'struct) (syntax->datum #'field))])
-       #'(begin
-           (defbinaryen* getter : BinaryenExpressionRef extra-args ... -> field-type)
-           (defbinaryen* setter : BinaryenExpressionRef extra-args ... field-type -> _void)))]
-    [(_ struct field field-type)
-     #'(defbinaryen*-get/set struct field [] field-type)]))
-         
-(define-syntax (defbinaryen*-get/set-fields stx)
-  (syntax-case stx ()
-    [(_ struct fields/types ...)
-     #`(begin
-         #,@(for/list ([ft (in-list (syntax->list #'(fields/types ...)))])
-              #`(defbinaryen*-get/set struct
-                  #,(first (syntax->datum ft))
-                  #,(second (syntax->datum ft)))))]))
 
 (defbinaryen*-get/set-fields AtomicRMW
   (Op BinaryenOp)
