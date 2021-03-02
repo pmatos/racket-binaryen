@@ -26,8 +26,8 @@ jobs:
         sudo apt-get install -y g++ python cmake         
     - name: Compile binaryen
       run: |
-        git clone https://github.com/WebAssembly/binaryen.git
-        cd binaryen
+        git clone https://github.com/WebAssembly/binaryen.git binaryen-src
+        cd binaryen-src
         cmake .
         make -j
         sudo make install
