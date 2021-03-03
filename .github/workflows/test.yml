@@ -5,12 +5,12 @@ on: [push, pull_request]
 jobs:
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
         racket-variant: ['CS', 'BC']
-        racket-version: [ '8.0', 'current' ]
+        racket-version: ['8.0', 'current']
     
     steps:
     - uses: actions/checkout@v2
@@ -29,8 +29,10 @@ jobs:
         git clone https://github.com/WebAssembly/binaryen.git binaryen-src
         cd binaryen-src
         cmake .
-        make -j
+        make -j2
         sudo make install
     - name: Run test
+      env:
+        LD_LIBRARY_PATH: "/usr/local/lib"
       run: racket test/wingo-raw.rkt test/wingo_fact.scm
       
