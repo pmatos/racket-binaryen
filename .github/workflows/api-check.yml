@@ -1,0 +1,18 @@
+name: Check API
+
+on: [push]
+
+jobs:
+
+  test:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout binaryen HEAD
+      run: git clone --depth 1 https://github.com/WebAssembly/binaryen.git binaryen-src
+    - name: Check API SHA
+      run: diff <(sha1sum binaryen-src/src/binaryen-c.h | cut -d ' ' -f1) <(grep ';==;' private/binaryen-ffi.rkt | cut -d ';' -f 3)
+    - name: Find last good commit
+      if: ${{ failure() }}
+      run: scripts/find-good-api.sh $(grep ';==;' private/binaryen-ffi.rkt | cut -d ';' -f 3)

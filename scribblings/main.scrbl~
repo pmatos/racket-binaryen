@@ -1,0 +1,16 @@
+#lang scribble/manual
+;; ---------------------------------------------------------------------------------------------------
+
+@(require (for-label binaryen))
+
+;; ---------------------------------------------------------------------------------------------------
+
+@title{racket-binaryen}
+@defmodule[binaryen]
+
+This is a wrapper for the Binaryen suite of WebAssembly tools.
+
+@table-of-contents[]
+@include-section[(lib "binaryen/types.scrbl")]
+@include-section[(lib "binaryen/modules.scrbl")]
+@include-section[(lib "binaryen/functions.scrbl")]

@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;3339a88dc93d294bed730832c6c956f88c082a33
+;==;05f62873e786702cc3f491deb1b45b8669b3161e
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -97,6 +97,7 @@
 (defbinaryen* BinaryenFeatureMultivalue         : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureGC                 : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureMemory64           : -> BinaryenFeatures)
+(defbinaryen* BinaryenFeatureTypedFunctionReferences : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureAll                : -> BinaryenFeatures)
 
 (define BinaryenModuleRef (_cpointer 'BinaryenModuleRef))
@@ -489,7 +490,11 @@
   RefIsNull
   RefIsFunc
   RefIsData
-  RefIsI31)
+  RefIsI31
+  RefAsNonNull
+  RefAsFunc
+  RefAsData
+  RefAsI31)
 
 ;;
 ;; Many of the operations have a well-defined name and define a setter and getter for it.
@@ -697,6 +702,10 @@
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenRefIs :
+  BinaryenModuleRef BinaryenOp BinaryenExpressionRef
+  -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenRefAs :
   BinaryenModuleRef BinaryenOp BinaryenExpressionRef
   -> BinaryenExpressionRef)
 
@@ -1172,9 +1181,16 @@
   (Value BinaryenExpressionRef)
   (Size BinaryenExpressionRef))
 
-; RefIsNull
+; RefIs
 
 (defbinaryen*-get/set-fields RefIs
+  (Op BinaryenOp)
+  (Value BinaryenExpressionRef))
+
+; RefAs
+
+(defbinaryen*-get/set-fields RefAs
+  (Op BinaryenOp)
   (Value BinaryenExpressionRef))
 
 ; RefFunc
@@ -1625,11 +1641,17 @@
 
 (defbinaryen* BinaryenTableGetName : BinaryenTableRef -> _string)
 
-(defbinaryen* BinaryenTableGetInitial : BinaryenTableRef -> _int)
+(defbinaryen* BinaryenTableSetName : BinaryenTableRef _string -> _void)
+
+(defbinaryen* BinaryenTableGetInitial : BinaryenTableRef -> BinaryenIndex)
+
+(defbinaryen* BinaryenTableSetInitial : BinaryenTableRef BinaryenIndex -> _void)
 
 (defbinaryen* BinaryenTableHasMax : BinaryenTableRef -> _bool)
 
-(defbinaryen* BinaryenTableGetMax : BinaryenTableRef -> _int)
+(defbinaryen* BinaryenTableGetMax : BinaryenTableRef -> BinaryenIndex)
+
+(defbinaryen* BinaryenTableSetMax : BinaryenTableRef BinaryenIndex -> _void)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
