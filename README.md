@@ -1,5 +1,5 @@
 [![](.github/badges/SponsoredbyIgalia.svg)](https://www.igalia.com)
-[![CI](https://github.com/pmatos/racket-binaryen/workflows/CI/badge.svg?branch=main)](https://github.com/pmatos/racket-binaryen/actions)
+[![CI](https://github.com/pmatos/racket-binaryen/workflows/test.yml/badge.svg?branch=main)](https://github.com/pmatos/racket-binaryen/actions)
 [![Scribble](https://img.shields.io/badge/Docs-Scribble-blue.svg)](https://pmatos.github.io/racket-binaryen)
 
 # racket-binaryen
