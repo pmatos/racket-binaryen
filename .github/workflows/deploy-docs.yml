@@ -20,9 +20,9 @@ jobs:
           variant: 'CS'
           version: 'current'
       - name: Install package locally
-        run: raco pkg install --auto --link -D loci
+        run: raco pkg install --auto --link -D $PWD
       - name: Build docs
-        run: raco scribble --html --dest documentation --dest-name index loci/scribblings/loci.scrbl
+        run: raco scribble --html --dest documentation --dest-name index scribblings/binaryen.scrbl
       - name: Install SSH Client 🔑
         uses: webfactory/ssh-agent@v0.2.0
         with:
