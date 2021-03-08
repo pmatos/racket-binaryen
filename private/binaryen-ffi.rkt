@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;05f62873e786702cc3f491deb1b45b8669b3161e
+;==;99835ab7ac8d7b6b9001b321c63c6e5d7d3e600e
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -1412,30 +1412,11 @@
 (defbinaryen* BinaryenRemoveEvent :
   BinaryenModuleRef _string -> _void)
 
-;; Function table - one per module
-
-(defbinaryen* BinaryenSetFunctionTable :
-  BinaryenModuleRef BinaryenIndex BinaryenIndex [funcNames : (_list i _string)] [BinaryenIndex = (length funcNames)] BinaryenExpressionRef -> _void)
-
-(defbinaryen* BinaryenIsFunctionTableImported : BinaryenModuleRef -> _bool)
-
-(defbinaryen* BinaryenGetNumFunctionTableSegments :
-  BinaryenModuleRef -> BinaryenIndex)
-
-(defbinaryen* BinaryenGetFunctionTableSegmentOffset :
-  BinaryenModuleRef BinaryenIndex -> BinaryenExpressionRef)
-
-(defbinaryen* BinaryenGetFunctionTableSegmentLength :
-  BinaryenModuleRef BinaryenIndex -> BinaryenIndex)
-
-(defbinaryen* BinaryenGetFunctionTableSegmentData :
-  BinaryenModuleRef BinaryenIndex BinaryenIndex -> _string)
-
 ;; Table
 (define BinaryenTableRef (_cpointer 'BinaryenTable))
 
 (defbinaryen* BinaryenAddTable :
-  BinaryenModuleRef _string BinaryenIndex BinaryenIndex [funcNames : (_list i _string)] [BinaryenIndex = (length funcNames)] BinaryenExpressionRef -> BinaryenTableRef)
+  BinaryenModuleRef _string BinaryenIndex BinaryenIndex -> BinaryenTableRef)
 
 (defbinaryen* BinaryenRemoveTable :
   BinaryenModuleRef _string -> _void)
@@ -1446,6 +1427,37 @@
 (defbinaryen* BinaryenGetTable : BinaryenModuleRef _string -> BinaryenTableRef)
 
 (defbinaryen* BinaryenGetTableByIndex : BinaryenModuleRef BinaryenIndex -> BinaryenTableRef)
+
+;; Elem segments
+(define BinaryenElementSegmentRef (_cpointer 'BinaryenElementSegment))
+
+(defbinaryen* BinaryenAddActiveElementSegment :
+  BinaryenModuleRef
+  _string
+  _string
+  [funcNames : (_list i _string)]
+  [BinaryenIndex = (length funcNames)]
+  BinaryenExpressionRef
+  -> BinaryenElementSegmentRef)
+
+(defbinaryen* BinaryenAddPassiveElementSegment :
+  BinaryenModuleRef
+  _string
+  [funcNames : (_list i _string)]
+  [BinaryenIndex = (length funcNames)]
+  -> BinaryenElementSegmentRef)
+
+(defbinaryen* BinaryenRemoveElementSegment :
+  BinaryenModuleRef _string -> _void)
+
+(defbinaryen* BinaryenGetNumElementSegments :
+  BinaryenModuleRef -> BinaryenIndex)
+
+(defbinaryen* BinaryenGetElementSegment :
+  BinaryenModuleRef _string -> BinaryenElementSegmentRef)
+
+(defbinaryen* BinaryenGetElementSegmentByIndex :
+  BinaryenModuleRef BinaryenIndex -> BinaryenElementSegmentRef)
 
 ;; Memory - one per module
 
@@ -1652,6 +1664,25 @@
 (defbinaryen* BinaryenTableGetMax : BinaryenTableRef -> BinaryenIndex)
 
 (defbinaryen* BinaryenTableSetMax : BinaryenTableRef BinaryenIndex -> _void)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; ELEM SEGMENT OPERATIONS
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defbinaryen*-get/set-fields ElementSegment
+  (Name _string)
+  (Table _string))
+
+(defbinaryen*-get ElementSegment
+  Offset BinaryenExpressionRef)
+(defbinaryen*-get ElementSegment
+  Length BinaryenIndex)
+(defbinaryen*-get ElementSegment
+  Data _string)
+(defbinaryen* BinayenElementSegmentIsPassive :
+  BinaryenElementSegmentRef -> _bool)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
