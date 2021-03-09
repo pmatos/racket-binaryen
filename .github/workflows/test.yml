@@ -36,6 +36,8 @@ jobs:
         sudo make install
     - name: Install pkg
       run: raco pkg install --auto $PWD
+    - name: Run unit tests
+      run: raco test .
     - name: Run wingo_fact.scm with wingo-raw
       run: racket tests/wingo-raw.rkt tests/wingo-input/wingo_fact.scm
     - name: Run wingo_zero.scm with wingo-raw

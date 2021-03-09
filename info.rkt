@@ -16,4 +16,8 @@
 (define compile-omit-paths '("tests"))
 
 (define test-omit-paths
-  (list #rx"\\.scrbl$"))
+  (list
+   "info.rkt"
+   "tests/"
+   "private/"
+   #rx"\\.scrbl$"))
