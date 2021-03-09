@@ -24,11 +24,28 @@
                         (map type-ref var-types)
                         (expression-ref body))))
 
+(define/contract (module-function-count #:module [mod (current-module)])
+  (() (#:module module?) . ->* . exact-positive-integer?)
+  (BinaryenGetNumFunctions (module-ref mod)))
+
 ;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
 
-  (require rackunit)
+  (require rackunit
+           racket/port)
 
+  (test-case "Module Function Check"
+    (define in
+      '(module
+           (func (export "this_is_zero") (result i32)
+                 (i32.const 0))))
+    (define mod
+      (module-parse
+       (with-output-to-string (lambda () (write in)))))
+    
+    (check = 1 (module-function-count #:module mod)))
+
+  
   (test-case "pass"
     (check-true #true)))

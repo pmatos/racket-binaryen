@@ -1579,7 +1579,7 @@
 (define-cstruct _BinaryenModuleAllocateAndWriteResult
   ([binary _pointer]
    [binaryBytes _size]
-   [sourceMp _bytes])) ; need to explicit free buffers
+   [sourceMap _bytes])) ; need to explicit free buffers
 ; TODO can we move the returned buffers into gc?
 
 (defbinaryen* BinaryenModuleAllocateAndWrite :
@@ -1587,7 +1587,7 @@
 
 (defbinaryen* BinaryenModuleAllocateAndWriteText :
   BinaryenModuleRef -> _string) ; need to explicitly free buffers
-; TODO can we more the return _string into gc?
+; TODO can we move the return _string into gc?
 
 (defbinaryen* BinaryenModuleRead :
   [input : _bytes]
