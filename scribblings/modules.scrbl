@@ -26,10 +26,10 @@ A @deftech{module} is the representation of a @tech{WebAssembly} module into whi
  Optimizes the Wasm module @racket[mod] in-place.}
 
 @defproc[(module-read [in bytes?]) module?]{
- Reads a module in binary format from bytes @racket[in] and returns a Wasm @tech[module].}
+ Reads a module in binary format from bytes @racket[in] and returns a Wasm module.}
 
 @defproc[(module-parse [s string?]) module?]{
- Reads a module from string @racket[s] and returns a Wasm @tech[module]. }
+ Reads a module from string @racket[s] and returns a Wasm module. }
 
 @defproc[(module-write [mod module?] [textual? boolean?] [#:source-map sm (or/c string? #false) #false]) bytes?]{
  Writes module @racket[mod] to a byte string using source map @racket[sm], if provided. Returns the byte string. The module is read in text format if @racket[textual?] is true, and in binary format otherwise.}

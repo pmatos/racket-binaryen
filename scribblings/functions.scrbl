@@ -16,4 +16,4 @@ A @deftech{function} is the representation of a @tech{WebAssembly} function.
 }
 
 @defproc[(module-function-count [#:module mod module? (current-module)]) exact-positive-integer?]{
- Takes a @tech[module] as an argument and it returns the number of @tech[functions] in the module.}
+ Takes a module as an argument and it returns the number of functions in the module.}
