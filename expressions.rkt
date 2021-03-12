@@ -2,6 +2,7 @@
 ;; ---------------------------------------------------------------------------------------------------
 
 (require "private/binaryen-ffi.rkt"
+         "private/types.rkt"
          "modules.rkt"
          "literals.rkt"
          "types.rkt"

@@ -1,20 +1,25 @@
 #lang racket/base
 ;; ---------------------------------------------------------------------------------------------------
 
-(require "private/binaryen-ffi.rkt"
-         "private/types.rkt"
+(require "binaryen-ffi.rkt"
          racket/contract)
 
 (provide
- type-none
- type-int32
- type-int64)
+ (struct-out type)
+ type-create
+ type-expand)
 
 ;; ---------------------------------------------------------------------------------------------------
 
-(define type-none (type (BinaryenTypeNone)))
-(define type-int32 (type (BinaryenTypeInt32)))
-(define type-int64 (type (BinaryenTypeInt64)))
+(struct type (ref))
+
+(define/contract (type-create types)
+  ((listof type?) . -> . type?)
+  (type (BinaryenTypeCreate (map type-ref types))))
+
+(define/contract (type-expand ty)
+  (type? . -> . (listof type?))
+  (BinaryenTypeExpand (type-ref ty)))
 
 ;; ---------------------------------------------------------------------------------------------------
 

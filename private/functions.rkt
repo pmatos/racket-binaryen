@@ -1,27 +1,23 @@
 #lang racket/base
 ;; ---------------------------------------------------------------------------------------------------
 
-(require "private/binaryen-ffi.rkt"
-         "private/types.rkt"
-         racket/contract)
+(require "binaryen-ffi.rkt")
 
 (provide
- type-none
- type-int32
- type-int64)
+ function
+ function-ref
+ function?)
 
 ;; ---------------------------------------------------------------------------------------------------
 
-(define type-none (type (BinaryenTypeNone)))
-(define type-int32 (type (BinaryenTypeInt32)))
-(define type-int64 (type (BinaryenTypeInt64)))
+(struct function (ref))
 
 ;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
 
-  (require rackunit)
-
+  (require rackunit
+           racket/port)
+  
   (test-case "pass"
     (check-true #true)))
-

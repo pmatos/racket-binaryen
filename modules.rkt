@@ -2,10 +2,10 @@
 ;; ---------------------------------------------------------------------------------------------------
 
 (require "private/binaryen-ffi.rkt"
+         "private/modules.rkt"
          racket/contract)
 
 (provide
- current-module
  module?
  module-ref
  module-create
@@ -13,16 +13,12 @@
  module-print
  module-optimize!
  module-read
- module-parse
+ (contract-out
+  [module-parse (string? . -> . module?)]
+  [current-module (parameter/c (or/c #false module?))])
  module-write)
 
 ;; ---------------------------------------------------------------------------------------------------
-
-; Module is just an opaque type representing a module
-(struct module (ref)
-  #:constructor-name make-module)
-
-(define current-module (make-parameter #false))
 
 (define/contract (module-create)
   (-> module?)
@@ -44,21 +40,22 @@
   (bytes? . -> . module?)
   (make-module (BinaryenModuleRead in)))
 
-(define/contract (module-parse s)
-  (string? . -> . module?)
-  (make-module (BinaryenModuleParse s)))
-
 (define/contract (module-write mod textual? #:sourcemap [sm #false])
   ((module? boolean?) (#:sourcemap (or/c string? #false)) . ->* . bytes?)
   (if textual?
       (BinaryenModuleAllocateAndWriteText (module-ref mod))
       (BinaryenModuleAllocateAndWrite (module-ref mod) sm)))
-  
+
+(define/contract (module-function-count [mod (current-module)])
+  (() (module?) . ->* . exact-positive-integer?)
+  (BinaryenGetNumFunctions (module-ref mod)))
+
 ;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
 
   (require rackunit
+           "test-utils.rkt"
            racket/port)
 
   (test-case "Module creation"
@@ -67,12 +64,13 @@
        (module-create))))
 
   (test-case "Module Parsing"
-    (define in
+    (with-test-mod
       '(module
            (func (export "this_is_zero") (result i32)
-                 (i32.const 0))))
-    (define mod (with-output-to-string (lambda () (write in))))
-    (check-true (module-valid? (module-parse mod))))
+                 (i32.const 0)))
+      
+      (check-true (module-valid?))
+      (check = 1 (module-function-count))))
        
   (test-case "pass"
     (check-true #true)))
