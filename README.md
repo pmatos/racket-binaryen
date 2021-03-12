@@ -6,7 +6,7 @@
 
 [Binaryen](https://github.com/WebAssembly/binaryen) bindings for [Racket](https://www.racket-lang.org).
 
-Currently, this work is experimental, there is no documentation and there are no wrappers to the bindings. The bindings are raw and unsafe.
+Currently, this work is experimental. There is some [initial documentation](https://pmatos.github.io/racket-binaryen) evolving together with the implementation of safe bindings but it's highly incomplete. 
 
 Andy Wingo gave a ["Compiling to WebAssembly"](https://fosdem.org/2021/schedule/event/webassembly/) presentation at FOSDEM'21, and published his [artifacts](https://github.com/wingo/compiling-to-webassembly).
 
