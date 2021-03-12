@@ -15,6 +15,3 @@ Types refer to WebAssembly types such as @tt{int32}, @tt{int64}, etc. There are 
 
 @defthing[type-int64 type?]{
  The type @tt{Int64}.}
-
-@defproc[(type-create [tys (listof type)]) type?]{
- Creates a type from the list of types @racket[tys]. These represent an ordered set of types.}
