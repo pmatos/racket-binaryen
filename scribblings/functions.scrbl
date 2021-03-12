@@ -19,7 +19,7 @@ A @deftech{function} is the representation of a @tech{WebAssembly} function.
  Takes a module as an argument and it returns the number of functions in the module.}
 
 @defproc[(module-function [idx exact-nonnegative-integer?] [#:module mod module? (current-module)]) function?]{
- Returns the @tech[function] in @racket[mod] indexed by @racket[idx], where @racket[idx < (module-function-count mod)].}
+ Returns the @tech{function} in @racket[mod] indexed by @racket[idx], where @racket[idx < (module-function-count mod)].}
 
 @defproc[(function-name [f function?]) string?]{
  Returns the name of function @racket[f].}
