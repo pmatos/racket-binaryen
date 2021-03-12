@@ -35,7 +35,7 @@ jobs:
         make -j2
         sudo make install
     - name: Install pkg
-      run: raco pkg install --auto $PWD
+      run: raco pkg install -D --auto $PWD
     - name: Run unit tests
       run: raco test .
     - name: Run wingo_fact.scm with wingo-raw
