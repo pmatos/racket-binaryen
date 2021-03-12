@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;99835ab7ac8d7b6b9001b321c63c6e5d7d3e600e
+;==;2995adb988c899b13d905a04694c3ab736b399ea
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -59,7 +59,7 @@
 (defbinaryen* BinaryenTypeI31ref      : -> BinaryenType)
 (defbinaryen* BinaryenTypeDataref     : -> BinaryenType)
 (defbinaryen* BinaryenTypeUnreachable : -> BinaryenType)
-                      
+
 (defbinaryen* BinaryenTypeAuto   : -> BinaryenType)
 (defbinaryen* BinaryenTypeCreate :
   [vec : (_list i BinaryenType)] [_int = (length vec)]
@@ -1707,7 +1707,7 @@
 
 (defbinaryen* BinaryenEventGetName : BinaryenEventRef -> _string)
 
-(defbinaryen* BinaryenEventGetAttribute : BinaryenEventRef -> _int)
+(defbinaryen* BinaryenEventGetAttribute : BinaryenEventRef -> _uint32)
 
 (defbinaryen* BinaryenEventGetParams : BinaryenEventRef -> BinaryenType)
 
