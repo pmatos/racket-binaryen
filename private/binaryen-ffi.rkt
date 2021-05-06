@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;2995adb988c899b13d905a04694c3ab736b399ea
+;==;07bee63ba40b27a8c5391c8c20d47487153b0317
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -341,6 +341,12 @@
   LeUVecI32x4
   GeSVecI32x4
   GeUVecI32x4
+  EqVecI64x2
+  NeVecI64x2
+  LtSVecI64x2
+  GtSVecI64x2
+  LeSVecI64x2
+  GeSVecI64x2
   EqVecF32x4
   NeVecF32x4
   LtVecF32x4
@@ -359,9 +365,10 @@
   XorVec128
   AndNotVec128
   BitselectVec128
+  AnyTrueVec128
+  PopcntVecI8x16
   AbsVecI8x16
   NegVecI8x16
-  AnyTrueVecI8x16
   AllTrueVecI8x16
   BitmaskVecI8x16
   ShlVecI8x16
@@ -373,7 +380,6 @@
   SubVecI8x16
   SubSatSVecI8x16
   SubSatUVecI8x16
-  MulVecI8x16
   MinSVecI8x16
   MinUVecI8x16
   MaxSVecI8x16
@@ -381,7 +387,6 @@
   AvgrUVecI8x16
   AbsVecI16x8
   NegVecI16x8
-  AnyTrueVecI16x8
   AllTrueVecI16x8
   BitmaskVecI16x8
   ShlVecI16x8
@@ -399,9 +404,13 @@
   MaxSVecI16x8
   MaxUVecI16x8
   AvgrUVecI16x8
+  Q15MulrSatSVecI16x8
+  ExtMulLowSVecI16x8
+  ExtMulHighSVecI16x8
+  ExtMulLowUVecI16x8
+  ExtMulHighUVecI16x8
   AbsVecI32x4
   NegVecI32x4
-  AnyTrueVecI32x4
   AllTrueVecI32x4
   BitmaskVecI32x4
   ShlVecI32x4
@@ -415,18 +424,26 @@
   MaxSVecI32x4
   MaxUVecI32x4
   DotSVecI16x8ToVecI32x4
+  ExtMulLowSVecI32x4
+  ExtMulHighSVecI32x4
+  ExtMulLowUVecI32x4
+  ExtMulHighUVecI32x4
   NegVecI64x2
+  AllTrueVecI64x2
+  BitmaskVecI64x2
   ShlVecI64x2
   ShrSVecI64x2
   ShrUVecI64x2
   AddVecI64x2
   SubVecI64x2
   MulVecI64x2
+  ExtMulLowSVecI64x2
+  ExtMulHighSVecI64x2
+  ExtMulLowUVecI64x2
+  ExtMulHighUVecI64x2
   AbsVecF32x4
   NegVecF32x4
   SqrtVecF32x4
-  QFMAVecF32x4
-  QFMSVecF32x4
   AddVecF32x4
   SubVecF32x4
   MulVecF32x4
@@ -442,8 +459,6 @@
   AbsVecF64x2
   NegVecF64x2
   SqrtVecF64x2
-  QFMAVecF64x2
-  QFMSVecF64x2
   AddVecF64x2
   SubVecF64x2
   MulVecF64x2
@@ -456,36 +471,56 @@
   FloorVecF64x2
   TruncVecF64x2
   NearestVecF64x2
+  ExtAddPairwiseSVecI8x16ToI16x8
+  ExtAddPairwiseUVecI8x16ToI16x8
+  ExtAddPairwiseSVecI16x8ToI32x4
+  ExtAddPairwiseUVecI16x8ToI32x4
   TruncSatSVecF32x4ToVecI32x4
   TruncSatUVecF32x4ToVecI32x4
-  TruncSatSVecF64x2ToVecI64x2
-  TruncSatUVecF64x2ToVecI64x2
   ConvertSVecI32x4ToVecF32x4
   ConvertUVecI32x4ToVecF32x4
-  ConvertSVecI64x2ToVecF64x2
-  ConvertUVecI64x2ToVecF64x2
-  LoadSplatVec8x16
-  LoadSplatVec16x8
-  LoadSplatVec32x4
-  LoadSplatVec64x2
-  LoadExtSVec8x8ToVecI16x8
-  LoadExtUVec8x8ToVecI16x8
-  LoadExtSVec16x4ToVecI32x4
-  LoadExtUVec16x4ToVecI32x4
-  LoadExtSVec32x2ToVecI64x2
-  LoadExtUVec32x2ToVecI64x2
+  Load8SplatVec128
+  Load16SplatVec128
+  Load32SplatVec128
+  Load64SplatVec128
+  Load8x8SVec128
+  Load8x8UVec128
+  Load16x4SVec128
+  Load16x4UVec128
+  Load32x2SVec128
+  Load32x2UVec128
+  Load32ZeroVec128
+  Load64ZeroVec128
+  Load8LaneVec128
+  Load16LaneVec128
+  Load32LaneVec128
+  Load64LaneVec128
+  Store8LaneVec128
+  Store16LaneVec128
+  Store32LaneVec128
+  Store64LaneVec128
   NarrowSVecI16x8ToVecI8x16
   NarrowUVecI16x8ToVecI8x16
   NarrowSVecI32x4ToVecI16x8
   NarrowUVecI32x4ToVecI16x8
-  WidenLowSVecI8x16ToVecI16x8
-  WidenHighSVecI8x16ToVecI16x8
-  WidenLowUVecI8x16ToVecI16x8
-  WidenHighUVecI8x16ToVecI16x8
-  WidenLowSVecI16x8ToVecI32x4
-  WidenHighSVecI16x8ToVecI32x4
-  WidenLowUVecI16x8ToVecI32x4
-  WidenHighUVecI16x8ToVecI32x4
+  ExtendLowSVecI8x16ToVecI16x8
+  ExtendHighSVecI8x16ToVecI16x8
+  ExtendLowUVecI8x16ToVecI16x8
+  ExtendHighUVecI8x16ToVecI16x8
+  ExtendLowSVecI16x8ToVecI32x4
+  ExtendHighSVecI16x8ToVecI32x4
+  ExtendLowUVecI16x8ToVecI32x4
+  ExtendHighUVecI16x8ToVecI32x4
+  ExtendLowSVecI32x4ToVecI64x2
+  ExtendHighSVecI32x4ToVecI64x2
+  ExtendLowUVecI32x4ToVecI64x2
+  ExtendHighUVecI32x4ToVecI64x2
+  ConvertLowSVecI32x4ToVecF64x2
+  ConvertLowUVecI32x4ToVecF64x2
+  TruncSatZeroSVecF64x2ToVecI32x4
+  TruncSatZeroUVecF64x2ToVecI32x4
+  DemoteZeroVecF64x2ToVecF32x4
+  PromoteLowVecF32x4ToVecF64x2
   SwizzleVec8x16
   RefIsNull
   RefIsFunc
@@ -600,7 +635,7 @@
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenLoad :
-  BinaryenModuleRef _int32 _int8 _int32 _int32 BinaryenType BinaryenExpressionRef
+  BinaryenModuleRef _int32 _stdbool _int32 _int32 BinaryenType BinaryenExpressionRef
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenStore :
@@ -681,6 +716,10 @@
   BinaryenModuleRef BinaryenOp _uint32 _uint32 BinaryenExpressionRef
   -> BinaryenExpressionRef)
 
+(defbinaryen* BinaryenSIMDLoadStoreLane :
+  BinaryenModuleRef BinaryenOp _uint32 _uint32 _uint8 BinaryenExpressionRef BinaryenExpressionRef
+  -> BinaryenExpressionRef)
+
 (defbinaryen* BinaryenMemoryInit :
   BinaryenModuleRef _uint32 BinaryenExpressionRef BinaryenExpressionRef BinaryenExpressionRef
   -> BinaryenExpressionRef)
@@ -752,7 +791,7 @@
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenI31Get :
-  BinaryenModuleRef BinaryenExpressionRef _int
+  BinaryenModuleRef BinaryenExpressionRef _stdbool
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenExpressionGetId :
@@ -877,9 +916,9 @@
 
 (defbinaryen* BinaryenCallRemoveOperandAt : BinaryenExpressionRef BinaryenIndex -> BinaryenExpressionRef)
 
-(defbinaryen* BinaryenCallIsReturn : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenCallIsReturn : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenCallSetReturn : BinaryenExpressionRef _bool -> _void)
+(defbinaryen* BinaryenCallSetReturn : BinaryenExpressionRef _stdbool -> _void)
 
 ; Call indirect
 
@@ -903,9 +942,9 @@
 
 (defbinaryen* BinaryenCallIndirectRemoveOperandAt : BinaryenExpressionRef BinaryenIndex -> BinaryenExpressionRef)
 
-(defbinaryen* BinaryenCallIndirectIsReturn : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenCallIndirectIsReturn : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenCallIndirectSetReturn : BinaryenExpressionRef _bool -> _void)
+(defbinaryen* BinaryenCallIndirectSetReturn : BinaryenExpressionRef _stdbool -> _void)
 
 (defbinaryen* BinaryenCallIndirectGetParams : BinaryenExpressionRef -> BinaryenType)
 
@@ -923,7 +962,7 @@
 
 ; LocalSet
 
-(defbinaryen* BinaryenLocalSetIsTee : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenLocalSetIsTee : BinaryenExpressionRef -> _stdbool)
 
 (defbinaryen* BinaryenLocalSetGetIndex : BinaryenExpressionRef -> BinaryenIndex)
 
@@ -957,13 +996,13 @@
 
 ; Load
 
-(defbinaryen* BinaryenLoadIsAtomic : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenLoadIsAtomic : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenLoadSetAtomic : BinaryenExpressionRef _bool -> _void)
+(defbinaryen* BinaryenLoadSetAtomic : BinaryenExpressionRef _stdbool -> _void)
 
-(defbinaryen* BinaryenLoadIsSigned : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenLoadIsSigned : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenLoadSetSigned : BinaryenExpressionRef _bool -> _void)
+(defbinaryen* BinaryenLoadSetSigned : BinaryenExpressionRef _stdbool -> _void)
 
 (defbinaryen* BinaryenLoadGetOffset : BinaryenExpressionRef -> _uint32)
 
@@ -983,9 +1022,9 @@
 
 ; Store
 
-(defbinaryen* BinaryenStoreIsAtomic : BinaryenExpressionRef -> _bool)
+(defbinaryen* BinaryenStoreIsAtomic : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenStoreSetAtomic : BinaryenExpressionRef _bool -> _void)
+(defbinaryen* BinaryenStoreSetAtomic : BinaryenExpressionRef _stdbool -> _void)
 
 (defbinaryen* BinaryenStoreGetBytes : BinaryenExpressionRef -> _uint32)
 
@@ -1232,9 +1271,9 @@
 
 (defbinaryen* BinaryenTryRemoveCatchBodyAt : BinaryenExpressionRef BinaryenIndex -> BinaryenExpressionRef)
 
-(defbinaryen* BinaryenTryHasCatchAll : BinaryenExpressionRef -> _int)
+(defbinaryen* BinaryenTryHasCatchAll : BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* BinaryenTryIsDelegate : BinaryenExpressionRef -> _int)
+(defbinaryen* BinaryenTryIsDelegate : BinaryenExpressionRef -> _stdbool)
 
 ; Throw
 
@@ -1292,7 +1331,7 @@
   (I31 BinaryenExpressionRef))
 
 ;; We use I31 only here due to binaryen #3613
-(defbinaryen*-get I31 IsSigned _bool)
+(defbinaryen*-get I31 IsSigned _stdbool)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -1331,7 +1370,7 @@
   BinaryenModuleRef _string _string _string _uint8 -> _void)
 
 (defbinaryen* BinaryenAddGlobalImport :
-  BinaryenModuleRef _string _string _string BinaryenType _bool -> _void)
+  BinaryenModuleRef _string _string _string BinaryenType _stdbool -> _void)
 
 (defbinaryen* BinaryenAddEventImport :
   BinaryenModuleRef _string _string _string _uint32 BinaryenType BinaryenType -> _void)
@@ -1381,7 +1420,7 @@
 
 
 (defbinaryen* BinaryenAddGlobal :
-  BinaryenModuleRef _string BinaryenType _bool BinaryenExpressionRef -> BinaryenGlobalRef)
+  BinaryenModuleRef _string BinaryenType _stdbool BinaryenExpressionRef -> BinaryenGlobalRef)
 
 (defbinaryen* BinaryenGetGlobal :
   BinaryenModuleRef _string -> BinaryenGlobalRef)
@@ -1464,11 +1503,11 @@
 (defbinaryen* BinaryenSetMemory :
   BinaryenModuleRef BinaryenIndex BinaryenIndex _string
   [segments : (_list i _string)]
-  [segmentPassing : (_list i _int8)]
+  [segmentPassing : (_list i _stdbool)]
   [segmentOffsets : (_list i BinaryenExpressionRef)]
   [segmentSizes : (_list i BinaryenIndex)]
   [BinaryenIndex = (length segments)] ; all lists here need to have the same length
-  _uint8 -> _void) ;FIXME should probably be _bool
+  _stdbool -> _void)
 
 (defbinaryen* BinaryenGetNumMemorySegments :
   BinaryenModuleRef -> _uint32)
@@ -1480,7 +1519,7 @@
   BinaryenModuleRef BinaryenIndex -> _size)
 
 (defbinaryen* BinaryenGetMemorySegmentPassive :
-  BinaryenModuleRef BinaryenIndex -> _bool)
+  BinaryenModuleRef BinaryenIndex -> _stdbool)
 
 (defbinaryen* BinaryenCopyMemorySegmentData :
   BinaryenModuleRef BinaryenIndex _string -> _void)
@@ -1507,7 +1546,7 @@
 
 (defbinaryen* BinaryenModulePrintAsmjs : BinaryenModuleRef -> _void)
 
-(defbinaryen* BinaryenModuleValidate : BinaryenModuleRef -> _bool)
+(defbinaryen* BinaryenModuleValidate : BinaryenModuleRef -> _stdbool)
 
 (defbinaryen* BinaryenModuleOptimize : BinaryenModuleRef -> _void)
 
@@ -1519,17 +1558,17 @@
 
 (defbinaryen* BinaryenSetShrinkLevel : _int -> _void)
 
-(defbinaryen* BinaryenGetDebugInfo : -> _bool)
+(defbinaryen* BinaryenGetDebugInfo : -> _stdbool)
 
-(defbinaryen* BinaryenSetDebugInfo : _bool -> _void)
+(defbinaryen* BinaryenSetDebugInfo : _stdbool -> _void)
 
-(defbinaryen* BinaryenGetLowMemoryUnused : -> _bool)
+(defbinaryen* BinaryenGetLowMemoryUnused : -> _stdbool)
 
-(defbinaryen* BinaryenSetLowMemoryUnused : _bool -> _void)
+(defbinaryen* BinaryenSetLowMemoryUnused : _stdbool -> _void)
 
-(defbinaryen* BinaryenGetFastMath : -> _bool)
+(defbinaryen* BinaryenGetFastMath : -> _stdbool)
 
-(defbinaryen* BinaryenSetFastMath : _int -> _void)
+(defbinaryen* BinaryenSetFastMath : _stdbool -> _void)
 
 (defbinaryen* BinaryenGetPassArgument : _string -> _string)
 
@@ -1549,9 +1588,9 @@
 
 (defbinaryen* BinaryenSetOneCallerInlineMaxSize : BinaryenIndex -> _void)
 
-(defbinaryen* BinaryenGetAllowInliningFunctionsWithLoops : -> _bool)
+(defbinaryen* BinaryenGetAllowInliningFunctionsWithLoops : -> _stdbool)
 
-(defbinaryen* BinaryenSetAllowInliningFunctionsWithLoops : _bool -> _void)
+(defbinaryen* BinaryenSetAllowInliningFunctionsWithLoops : _stdbool -> _void)
 
 (defbinaryen* BinaryenModuleRunPasses :
   BinaryenModuleRef [passes : (_list i _string)] [BinaryenIndex = (length passes)] -> _void)
@@ -1622,7 +1661,7 @@
 
 (defbinaryen* BinaryenFunctionGetNumLocals : BinaryenFunctionRef -> BinaryenIndex)
 
-(defbinaryen* BinaryenFunctionHasLocalName : BinaryenFunctionRef BinaryenIndex -> _bool)
+(defbinaryen* BinaryenFunctionHasLocalName : BinaryenFunctionRef BinaryenIndex -> _stdbool)
 
 (defbinaryen* BinaryenFunctionGetLocalName : BinaryenFunctionRef BinaryenIndex -> _string)
 
@@ -1659,7 +1698,7 @@
 
 (defbinaryen* BinaryenTableSetInitial : BinaryenTableRef BinaryenIndex -> _void)
 
-(defbinaryen* BinaryenTableHasMax : BinaryenTableRef -> _bool)
+(defbinaryen* BinaryenTableHasMax : BinaryenTableRef -> _stdbool)
 
 (defbinaryen* BinaryenTableGetMax : BinaryenTableRef -> BinaryenIndex)
 
@@ -1682,7 +1721,7 @@
 (defbinaryen*-get ElementSegment
   Data _string)
 (defbinaryen* BinayenElementSegmentIsPassive :
-  BinaryenElementSegmentRef -> _bool)
+  BinaryenElementSegmentRef -> _stdbool)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -1695,7 +1734,7 @@
 
 (defbinaryen* BinaryenGlobalGetType : BinaryenGlobalRef -> BinaryenType)
 
-(defbinaryen* BinaryenGlobalIsMutable : BinaryenGlobalRef -> _bool)
+(defbinaryen* BinaryenGlobalIsMutable : BinaryenGlobalRef -> _stdbool)
 
 (defbinaryen* BinaryenGlobalGetInitExpr : BinaryenGlobalRef -> BinaryenExpressionRef)
 
@@ -1826,9 +1865,9 @@
 
 (defbinaryen* ExpressionRunnerCreate : BinaryenModuleRef ExpressionRunnerFlags BinaryenIndex BinaryenIndex -> ExpressionRunnerRef)
 
-(defbinaryen* ExpressionRunnerSetLocalValue : ExpressionRunnerRef BinaryenIndex BinaryenExpressionRef -> _bool)
+(defbinaryen* ExpressionRunnerSetLocalValue : ExpressionRunnerRef BinaryenIndex BinaryenExpressionRef -> _stdbool)
 
-(defbinaryen* ExpressionRunnerSetGlobalValue : ExpressionRunnerRef _string BinaryenExpressionRef -> _bool)
+(defbinaryen* ExpressionRunnerSetGlobalValue : ExpressionRunnerRef _string BinaryenExpressionRef -> _stdbool)
 
 (defbinaryen* ExpressionRunnerRunAndDispose : ExpressionRunnerRef BinaryenExpressionRef -> BinaryenExpressionRef)
 
@@ -1840,6 +1879,6 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defbinaryen* BinaryenSetColorsEnabled : _bool -> _void)
+(defbinaryen* BinaryenSetColorsEnabled : _stdbool -> _void)
 
-(defbinaryen* BinaryenAreColorsEnabled : -> _bool)
+(defbinaryen* BinaryenAreColorsEnabled : -> _stdbool)
