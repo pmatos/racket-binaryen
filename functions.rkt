@@ -20,15 +20,18 @@
    (function? . -> . exact-nonnegative-integer?)]
 
   [module-function
-   (->i ([n (mod) (and/c exact-nonnegative-integer?
-                         (</c (module-function-count mod)))])
+   (->i ([n (mod) (or/c string?
+                        (and/c exact-nonnegative-integer?
+                               (</c (module-function-count mod))))])
         (#:module [mod module?])
         [_ function?])]))
 
 ;; ---------------------------------------------------------------------------------------------------
 
-(define/contract (module-add-function name arg-types result-types var-types body #:module [mod (current-module)])
-  ((string? (listof type?) (listof type?) (listof type?) expression?) (#:module module?) . ->* . function?)
+(define/contract (module-add-function name arg-types result-types var-types body
+                                      #:module [mod (current-module)])
+  (->* (string? (listof type?) (listof type?) (listof type?) expression?) (#:module module?)
+       function?)
   (function
    (BinaryenAddFunction (module-ref mod)
                         name
@@ -41,11 +44,17 @@
   (() (#:module module?) . ->* . exact-positive-integer?)
   (BinaryenGetNumFunctions (module-ref mod)))
 
+(define (module-function n #:module [mod (current-module)])
+  (function
+   (if (string? n)
+       (BinaryenGetFunction (module-ref mod) n)
+       (BinaryenGetFunctionByIndex (module-ref mod) n))))
+
 (define/contract (function-name f)
   (function? . -> . string?)
   (BinaryenFunctionGetName (function-ref f)))
 
-(define/contract (function-param-types f)
+(define/contract (function-parameter-types f)
   (function? . -> . (listof type?))
   (type-expand
    (type
@@ -67,9 +76,13 @@
        [_ type?])
   (BinaryenFunctionGetVar (function-ref f) n))
 
-(define (module-function n #:module [mod (current-module)])
-  (function
-   (BinaryenGetFunctionByIndex (module-ref mod) n)))
+(define/contract (function-get-locals-count f)
+  (function? . -> . exact-nonnegative-integer?)
+  (BinaryenFunctionGetNumLocals (function-ref f)))
+
+(define/contract (function-local-has-name? f n)
+  (function? exact-nonnegative-integer? . -> . bool?)
+  (BinaryenFunctionHasLocalName (function-ref f) n))
 
 ;; ---------------------------------------------------------------------------------------------------
 
