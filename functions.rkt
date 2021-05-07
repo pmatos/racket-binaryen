@@ -12,7 +12,7 @@
  module-add-function
  module-function-count
  function-name
- function-param-types
+ function-parameter-types
  function-result-types
  function-variable-type
  (contract-out
