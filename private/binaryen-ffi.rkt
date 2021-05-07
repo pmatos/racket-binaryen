@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;07bee63ba40b27a8c5391c8c20d47487153b0317
+;==;752dc05ccff3a534e3e5acda324b8287ec5d8ab7
 
 ;; WARNING: Does not include deprecated bindings!
 
