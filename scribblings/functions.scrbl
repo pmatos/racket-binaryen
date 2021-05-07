@@ -39,5 +39,5 @@ A @deftech{function} is the representation of a @tech{WebAssembly} function.
 @defproc[(function-get-locals-count [f function?]) exact-nonnegative-integer?]{
  Returns the number of locals in function @racket[f], including parameters.}
 
-@defproc[(function-local-has-name? [f function?] [n exact-nonnegtive-integer?]) bool?]{
+@defproc[(function-local-has-name? [f function?] [n exact-nonnegtive-integer?]) boolean?]{
  Returns @racket[true] if the local indexed by @racket[n] in function @racket[f] has a name, and @racket[false] otherwise.}

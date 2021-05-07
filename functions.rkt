@@ -81,7 +81,7 @@
   (BinaryenFunctionGetNumLocals (function-ref f)))
 
 (define/contract (function-local-has-name? f n)
-  (function? exact-nonnegative-integer? . -> . bool?)
+  (function? exact-nonnegative-integer? . -> . boolean?)
   (BinaryenFunctionHasLocalName (function-ref f) n))
 
 ;; ---------------------------------------------------------------------------------------------------
