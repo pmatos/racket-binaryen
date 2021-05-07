@@ -1720,7 +1720,7 @@
   Length BinaryenIndex)
 (defbinaryen*-get ElementSegment
   Data _string)
-(defbinaryen* BinayenElementSegmentIsPassive :
+(defbinaryen* BinaryenElementSegmentIsPassive :
   BinaryenElementSegmentRef -> _stdbool)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
