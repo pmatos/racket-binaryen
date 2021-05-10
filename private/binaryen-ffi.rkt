@@ -1532,7 +1532,7 @@
 ; Features
 
 (defbinaryen* BinaryenModuleGetFeatures : BinaryenModuleRef -> BinaryenFeatures)
-
+(defbinaryen* BinaryenModuleSetFeatures : BinaryenModuleRef BinaryenFeatures -> _void)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
