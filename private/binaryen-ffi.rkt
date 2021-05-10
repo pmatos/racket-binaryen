@@ -18,7 +18,7 @@
 ;; WARNING: Does not include deprecated bindings!
 
 (define (get-lib-search-dirs/local)
-  (cons (string->path "/home/pmatos/dev/binaryen/lib")
+  (cons (string->path "/home/pmatos/dev/binaryen/out/lib")
         (get-lib-search-dirs)))
 
 (define libbinaryen (ffi-lib "libbinaryen"
