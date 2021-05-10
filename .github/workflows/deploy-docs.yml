@@ -24,7 +24,7 @@ jobs:
           version: 'current'
       - name: Install package locally
         run: raco pkg install --auto --link -D $PWD
-          - name: Install dependencies
+      - name: Install dependencies
         run: |
         sudo apt-get update
         sudo apt-get install -y g++ python cmake         
