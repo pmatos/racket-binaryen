@@ -46,10 +46,6 @@
       (BinaryenModuleAllocateAndWriteText (module-ref mod))
       (BinaryenModuleAllocateAndWrite (module-ref mod) sm)))
 
-(define/contract (module-function-count [mod (current-module)])
-  (() (module?) . ->* . exact-positive-integer?)
-  (BinaryenGetNumFunctions (module-ref mod)))
-
 ;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
@@ -69,8 +65,7 @@
            (func (export "this_is_zero") (result i32)
                  (i32.const 0)))
       
-      (check-true (module-valid?))
-      (check = 1 (module-function-count))))
+      (check-true (module-valid?))))
        
   (test-case "pass"
     (check-true #true)))
