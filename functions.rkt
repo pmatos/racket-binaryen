@@ -23,14 +23,14 @@
    (->i ([n (mod) (or/c string?
                         (and/c exact-nonnegative-integer?
                                (</c (module-function-count mod))))])
-        (#:module [mod module?])
+        ([mod module?])
         [_ function?])]))
 
 ;; ---------------------------------------------------------------------------------------------------
 
 (define/contract (module-add-function name arg-types result-types var-types body
-                                      #:module [mod (current-module)])
-  (->* (string? (listof type?) (listof type?) (listof type?) expression?) (#:module module?)
+                                      [mod (current-module)])
+  (->* (string? (listof type?) (listof type?) (listof type?) expression?) (module?)
        function?)
   (function
    (BinaryenAddFunction (module-ref mod)
@@ -40,11 +40,11 @@
                         (map type-ref var-types)
                         (expression-ref body))))
 
-(define/contract (module-function-count #:module [mod (current-module)])
-  (() (#:module module?) . ->* . exact-positive-integer?)
+(define/contract (module-function-count [mod (current-module)])
+  (() (module?) . ->* . exact-positive-integer?)
   (BinaryenGetNumFunctions (module-ref mod)))
 
-(define (module-function n #:module [mod (current-module)])
+(define (module-function n [mod (current-module)])
   (function
    (if (string? n)
        (BinaryenGetFunction (module-ref mod) n)
