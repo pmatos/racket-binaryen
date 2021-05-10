@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      LD_LIBRARY_PATH: "/usr/local/lib"
+
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
@@ -21,6 +24,17 @@ jobs:
           version: 'current'
       - name: Install package locally
         run: raco pkg install --auto --link -D $PWD
+          - name: Install dependencies
+        run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ python cmake         
+      - name: Compile binaryen
+        run: |
+        git clone --depth 1 https://github.com/WebAssembly/binaryen.git binaryen-src
+        cd binaryen-src
+        cmake .
+        make -j2
+        sudo make install
       - name: Build docs
         run: raco scribble --html --dest documentation --dest-name index scribblings/binaryen.scrbl
       - name: Install SSH Client 🔑
