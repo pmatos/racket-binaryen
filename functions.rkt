@@ -29,8 +29,8 @@
 ;; ---------------------------------------------------------------------------------------------------
 
 (define/contract (module-add-function name arg-types result-types var-types body
-                                      [mod (current-module)])
-  (->* (string? (listof type?) (listof type?) (listof type?) expression?) (module?)
+                                      #:module [mod (current-module)])
+  (->* (string? (listof type?) (listof type?) (listof type?) expression?) (#:module module?)
        function?)
   (function
    (BinaryenAddFunction (module-ref mod)
