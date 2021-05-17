@@ -1616,10 +1616,12 @@
   -> (values res output sourceMap))
 
 (define-cstruct _BinaryenModuleAllocateAndWriteResult
-  ([binary _pointer]
+  ([binary _bytes]
    [binaryBytes _size]
-   [sourceMap _bytes])) ; need to explicit free buffers
+   [sourceMap _string])) ; need to explicit free buffers
 ; TODO can we move the returned buffers into gc?
+(provide BinaryenModuleAllocateAndWriteResult-binary)
+
 
 (defbinaryen* BinaryenModuleAllocateAndWrite :
   BinaryenModuleRef _string -> _BinaryenModuleAllocateAndWriteResult)

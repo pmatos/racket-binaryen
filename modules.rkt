@@ -38,8 +38,8 @@
   ;; syntax highlighting that's lost when you use BinaryenModuleAllocateAndWriteText
   ;; FIXME In the future, it might be useful to revisit this issue.
   (fprintf (current-output-port) "~a"
-           (BinaryenModuleAllocateAndWriteText (module-ref mod))))
-
+           (bytes->string/utf-8 (module-write mod #true))))
+     
 (define/contract (module-optimize! [mod (current-module)])
   (() (module?) . ->* . void?)
   (BinaryenModuleOptimize (module-ref mod)))
@@ -51,9 +51,9 @@
 (define/contract (module-write mod textual? #:sourcemap [sm #false])
   ((module? boolean?) (#:sourcemap (or/c string? #false)) . ->* . bytes?)
   (if textual?
-      (BinaryenModuleAllocateAndWriteText (module-ref mod))
-      (BinaryenModuleAllocateAndWrite (module-ref mod) sm)))
-
+      (string->bytes/utf-8 (BinaryenModuleAllocateAndWriteText (module-ref mod)))
+      (BinaryenModuleAllocateAndWriteResult-binary (BinaryenModuleAllocateAndWrite (module-ref mod) sm))))
+  
 ;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
