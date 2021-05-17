@@ -1625,8 +1625,7 @@
   BinaryenModuleRef _string -> _BinaryenModuleAllocateAndWriteResult)
 
 (defbinaryen* BinaryenModuleAllocateAndWriteText :
-  BinaryenModuleRef -> _string) ; need to explicitly free buffers
-; TODO can we move the return _string into gc?
+  BinaryenModuleRef -> _string)
 
 (defbinaryen* BinaryenModuleRead :
   [input : _bytes]
