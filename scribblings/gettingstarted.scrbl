@@ -65,10 +65,28 @@ You can see how it is printed to standard output.
 
 @examples[#:eval binaryen-eval
 (module-print mod)
-(printf "hello")
 ]
 
 @section{Writing WebAssembly}
+
+You can also create WebAssembly on the fly, have it optimized and write it to a file. Lets say that we want to manually create a module that contains a function @tt{square}, that multiplies a number with itself.
+
+What we want to create is something like this:
+
+@codeblock|{
+  (module
+    (func $square (export "square")
+          (param $x i32)
+          (result $i32)
+     (i32.mul (local.get $x) (local.get $x))))
+}|
+
+Most functions in this library will receive an optional @racket[module] to use as last parameter. If not provided, they will the value of @racket[current-module] which is useful to create WebAssembly code since you tend to work on a module at a time.
+
+The racket code will take this shape:
+
+
+
 
 @section{Optimization}
 
