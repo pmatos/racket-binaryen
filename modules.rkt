@@ -30,7 +30,15 @@
 
 (define/contract (module-print [mod (current-module)])
   (() (module?) . ->* . void?)
-  (BinaryenModulePrint (module-ref mod)))
+  ;; This should be using BinaryenModulePrint, but it doesn't because there's no
+  ;; straightforward way in racket to redirect the stdout to current-output-port.
+  ;; See: https://groups.google.com/g/racket-users/c/c3RaYvSD4nE
+  ;; We use BinaryenModuleAllocateAndWriteText
+  ;; This is not the same as BinaryenModulePrint because this function uses
+  ;; syntax highlighting that's lost when you use BinaryenModuleAllocateAndWriteText
+  ;; FIXME In the future, it might be useful to revisit this issue.
+  (fprintf (current-output-port) "~a"
+           (BinaryenModuleAllocateAndWriteText (module-ref mod))))
 
 (define/contract (module-optimize! [mod (current-module)])
   (() (module?) . ->* . void?)
@@ -66,6 +74,16 @@
                  (i32.const 0)))
       
       (check-true (module-valid?))))
-       
+
+  (test-case "Module Printing"
+    (with-test-mod
+      '(module
+           (func (export "this_is_zero") (result i32)
+                 (i32.const 0)))
+
+      (check-true (> (string-length (with-output-to-string
+                                      (lambda () (module-print))))
+                     0))))
+  
   (test-case "pass"
     (check-true #true)))
