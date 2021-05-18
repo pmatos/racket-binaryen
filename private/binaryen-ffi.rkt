@@ -1626,8 +1626,15 @@
 (defbinaryen* BinaryenModuleAllocateAndWrite :
   BinaryenModuleRef _string -> _BinaryenModuleAllocateAndWriteResult)
 
+(define _string/free
+  (make-ctype _pointer
+              #false
+              (lambda (x)
+                (begin0 (cast x _pointer _string)
+                  (free x)))))
+
 (defbinaryen* BinaryenModuleAllocateAndWriteText :
-  BinaryenModuleRef -> _string)
+  BinaryenModuleRef -> _string/free)
 
 (defbinaryen* BinaryenModuleRead :
   [input : _bytes]
