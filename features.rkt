@@ -49,7 +49,7 @@
 (define feature-all (list feature-mvp
                           feature-atomics
                           feature-bulk-memory
-                          feature-mutate-globals
+                          feature-mutable-globals
                           feature-nontrapping-fptoint
                           feature-sign-extension
                           feature-simd128
