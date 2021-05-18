@@ -44,7 +44,7 @@ Features refer to WebAssembly features that are enabled in a module and generall
  This feature refers to the @hyperlink["https://github.com/WebAssembly/gc/"]{Garbage Collection proposal}.}
 
 @defthing[feature-memory64 feature?]{
- This feature refers to the @hyperlink["https://github.com/WebAssembly/memory64"]{Memory with 64bit indexes proposal}
+ This feature refers to the @hyperlink["https://github.com/WebAssembly/memory64"]{Memory with 64bit indexes proposal}.}
 
 @defthing[feature-typed-function-references feature?]{
  This feature refers to the @hyperlink["https://github.com/WebAssembly/function-references"]{Typed Function References proposal}.}
