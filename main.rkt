@@ -10,4 +10,5 @@
 "indices.rkt"
 "literals.rkt"
 "modules.rkt"
+"optimizations.rkt"
 "types.rkt"
