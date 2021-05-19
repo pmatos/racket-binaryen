@@ -5,7 +5,9 @@
 ;; - keep them that way.
 "exports.rkt"
 "expressions.rkt"
+"features.rkt"
 "functions.rkt"
+"indices.rkt"
 "literals.rkt"
 "modules.rkt"
 "types.rkt"
