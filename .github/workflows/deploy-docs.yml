@@ -36,7 +36,7 @@ jobs:
           make -j2
           sudo make install
       - name: Build docs
-        run: raco scribble --html --dest documentation --dest-name index scribblings/binaryen.scrbl
+        run: raco scribble --html +m --redirect-main "https://docs.racket-lang.org/" --dest documentation --dest-name index scribblings/binaryen.scrbl
       - name: Install SSH Client 🔑
         uses: webfactory/ssh-agent@v0.5.0
         with:
