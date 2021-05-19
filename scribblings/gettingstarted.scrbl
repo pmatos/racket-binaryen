@@ -85,8 +85,24 @@ Most functions in this library will receive an optional @racket[module] to use a
 
 The racket code will take this shape:
 
+@examples[#:eval #false #:no-result
+(require racket/contract
+         binaryen)
 
+(define/contract (create-square)
+  (-> module?)
+  (parameterize ([current-module (module-create)])
+    (module-add-function "square"
+                         (list type-int32)
+                         (list type-int32)
+                         '()
+                         (make-mul-int32 (make-localget 0 type-int32)
+                                         (make-localget 0 type-int32)))
+    (module-export-function "$square" "square")
+    (current-module)))
+]
 
+In this example we create an empty module with @racket[(module-create)] and set it as the @racket[current-module] so that we don't need to pass it around. Then we add a function withe name @racket["square"], receiving one 32bit integer, returning one 32bit integer, and without any locals. The body is created in-place and passed into the function. The function @racket[module-add-function] creates the function and adds it to the @racket[current-module].
 
 @section{Optimization}
 
