@@ -15,6 +15,7 @@ jobs:
 
     env:
       LD_LIBRARY_PATH: "/usr/local/lib"
+      DYLD_LIBRARY_PATH: "/usr/local/lib"
 
     steps:
     - uses: actions/checkout@v2
