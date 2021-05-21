@@ -13,10 +13,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    env:
-      LD_LIBRARY_PATH: "/usr/local/lib"
-      DYLD_LIBRARY_PATH: "/usr/local/lib"
-
     steps:
     - uses: actions/checkout@v2
     - uses: Bogdanp/setup-racket@v1.1
