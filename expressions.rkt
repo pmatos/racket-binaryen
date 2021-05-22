@@ -29,6 +29,70 @@
 
 (struct expression (ref))
 
+(struct unary-expression expression ())
+
+;; int
+
+(define-syntax (define-unary-op stx)
+  (syntax-case stx ()
+    [(_ binaryenop name arg-types)
+     #`(begin
+         #,@(for/list ([arg-type (in-list arg-types)])
+              (with-syntax ([fnname (format-id arg-type "make-~a-~a" (syntax->datum name) arg-type)])
+                #`(define/contact (fnname x #:module [mod (current-module)])
+                    ((expression?) (#:module module?) . ->* . unary-expression?)
+                    (unary-expression
+                     (BinaryenUnary (module-ref mod) (binaryenop) (expression-ref x)))))))]))
+
+(define-unary-op clz '(int32 int64))
+(define-unary-op ctz '(int32 int64))
+(define-unary-op popcnt '(int32 int64))
+(define-unary-op neg
+
+(define/contract (make-clz-int32 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenClzInt32) (expression-ref x))))
+
+(define/contract (make-clz-int64 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenClzInt64) (expression-ref x))))
+
+(define/contract (make-ctz-int32 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenCtzInt32) (expression-ref x))))
+
+(define/contract (make-ctz-int64 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenCtzInt64) (expression-ref x))))
+
+(define/contract (make-popcnt-int32 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenPopcntInt32) (expression-ref x))))
+
+(define/contract (make-popcnt-int64 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenPopcntInt64) (expression-ref x))))
+
+;; float
+
+;; relational
+
+(define/contract (make-eqz-int32 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenEqZInt32) (expression-ref x))))
+
+(define/contract (make-eqz-int64 x #:module [mod (current-module)])
+  ((expression?) (#:module module?) . ->* . unary-expression?)
+  (unary-expression
+   (BinaryenUnary (module-ref mod) (BinaryenEqZInt64) (expression-ref x))))
+
 (struct binary-expression expression ())
 
 (define/contract (make-add-int32 a b #:module [mod (current-module)])
@@ -54,13 +118,6 @@
                    (BinaryenMulInt32)
                    (expression-ref a)
                    (expression-ref b))))
-
-(struct unary-expression expression ())
-
-(define/contract (make-eqz-int32 x #:module [mod (current-module)])
-  ((expression?) (#:module module?) . ->* . unary-expression?)
-  (unary-expression
-   (BinaryenUnary (module-ref mod) (BinaryenEqZInt32) (expression-ref x))))
    
 (struct call-expression expression ())
 
