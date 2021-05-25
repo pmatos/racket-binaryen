@@ -19,7 +19,8 @@
 
 (define (get-lib-search-dirs/local)
   (cons (string->path "/usr/local/lib")
-        (get-lib-search-dirs)))
+        (cons (string->path "/home/pmatos/dev/binaryen/out/lib")
+              (get-lib-search-dirs))))
 
 (define libbinaryen (ffi-lib "libbinaryen"
                              #:get-lib-dirs get-lib-search-dirs/local))
@@ -428,6 +429,7 @@
   ExtMulHighSVecI32x4
   ExtMulLowUVecI32x4
   ExtMulHighUVecI32x4
+  AbsVecI64x2
   NegVecI64x2
   AllTrueVecI64x2
   BitmaskVecI64x2
