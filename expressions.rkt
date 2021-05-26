@@ -19,10 +19,6 @@
          localget-expression?
          localset-expression?
          localtee-expression?
-         make-add-int32
-         make-sub-int32
-         make-mul-int32
-         make-eqz-int32
          make-call
          make-if
          make-const
