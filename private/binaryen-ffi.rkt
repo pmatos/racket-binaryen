@@ -1198,7 +1198,7 @@
 
 ; SIMDLoadStoreLane
 
-(defbinaryen*-get/set-field SIMDLoadStoreLane
+(defbinaryen*-get/set-fields SIMDLoadStoreLane
   (Op BinaryenOp)
   (Offset _uint32)
   (Align _uint32)
