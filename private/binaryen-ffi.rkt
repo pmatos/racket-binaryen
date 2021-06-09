@@ -1184,14 +1184,14 @@
 ; SIMDShift
 
 (defbinaryen*-get/set-fields SIMDShift
-  (Op BinaryenExpressionRef)
+  (Op BinaryenOp)
   (Vec BinaryenExpressionRef)
   (Shift BinaryenExpressionRef))
 
 ; SIMDLoad
 
 (defbinaryen*-get/set-fields SIMDLoad
-  (Op BinaryenExpressionRef)
+  (Op BinaryenOp)
   (Offset _uint32)
   (Align _uint32)
   (Ptr BinaryenExpressionRef))
