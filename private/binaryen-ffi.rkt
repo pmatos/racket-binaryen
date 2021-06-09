@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;752dc05ccff3a534e3e5acda324b8287ec5d8ab7
+;==;5a68060230f6ce77321b2ba7917382a876691a57
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -1195,6 +1195,20 @@
   (Offset _uint32)
   (Align _uint32)
   (Ptr BinaryenExpressionRef))
+
+; SIMDLoadStoreLane
+
+(defbinaryen*-get/set-field SIMDLoadStoreLane
+  (Op BinaryenOp)
+  (Offset _uint32)
+  (Align _uint32)
+  (Index _uint8)
+  (Ptr BinaryenExpressionRef)
+  (Vec BinaryenExpressionRef))
+
+(defbinaryen* BinaryenSIMDLoadStoreLaneIsStore :
+  BinaryenExpressionRef -> _bool)
+
 
 ; MemoryInit
 
