@@ -637,11 +637,11 @@
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenLoad :
-  BinaryenModuleRef _int32 _stdbool _int32 _int32 BinaryenType BinaryenExpressionRef
+  BinaryenModuleRef _uint32 _stdbool _uint32 _uint32 BinaryenType BinaryenExpressionRef
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenStore :
-  BinaryenModuleRef _int32 _int32 _int32 BinaryenExpressionRef BinaryenExpressionRef BinaryenType
+  BinaryenModuleRef _uint32 _uint32 _uint32 BinaryenExpressionRef BinaryenExpressionRef BinaryenType
   -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenConst :
