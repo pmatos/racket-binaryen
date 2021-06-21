@@ -410,6 +410,30 @@
   (block-expression? expression? . -> . nonnegative-exact-integer?)
   (BinaryenBlockAppendChild (block-expression-ref blk) (expression-ref chd)))
 
+;; ---------------------------------------------------------------------------------------------------
+
+(struct load-expression expression ())
+
+(define/contract (make-load bytes signed? offset align type ptr #:module [mod (current-module)])
+  ((nonnegative-exact-integer? boolean? nonnegative-exact-integer? nonnegative-exact-integer? type? expression?) (#:module module?) . -> . load-expression?)
+  (load-expression
+   (BinaryenLoad (module-ref mod)
+                 bytes signed? offset align
+                 (type-ref type)
+                 (expression-ref ptr))))
+
+;; ---------------------------------------------------------------------------------------------------
+
+(struct store-expression expression ())
+
+(define/contract (make-store bytes offset align ptr value type #:module [mod (current-module)])
+  ((nonnegative-exact-integer? nonnegative-exact-integer? nonnegative-exact-integer? expression? expression?) (#:module module?) . -> . store-expression?)
+  (store-expression
+   (BinaryenStore (module-ref mod)
+                  bytes offset align
+                  (expression-ref ptr)
+                  (expression-ref value)
+                  (type-ref type))))
 
 ;; ---------------------------------------------------------------------------------------------------
 
