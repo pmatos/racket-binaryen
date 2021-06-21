@@ -20,6 +20,33 @@
          localset-expression?
          localtee-expression?
          make-call
+         make-call-indirect
+         make-return-call
+         
+         ;; block
+         make-block
+         block-name
+         set-block-name!
+         block-children-count
+         block-children-ref
+         block-children-append
+
+         ;; load
+         make-load
+         load-atomic?
+         set-load-atomic!
+         load-signed?
+         set-load-signed!
+         load-offset
+         set-load-offset!
+         load-bytes
+         set-load-bytes!
+         load-align
+         set-load-align!
+         load-ptr
+         set-load-ptr!
+         
+         make-store
          make-if
          make-const
          make-localget
