@@ -422,6 +422,15 @@
                  (type-ref type)
                  (expression-ref ptr))))
 
+
+(define/contract (load-atomic? ld)
+  (load-expression? . -> . boolean?)
+  (BinaryenLoadIsAtomic (expression-ref ld)))
+
+(define/contract (set-load-atomic! ld is-atomic)
+  (load-expression? boolean? . -> . void?)
+  (BinaryenLoadSetAtomic ld is-atomic))
+
 ;; ---------------------------------------------------------------------------------------------------
 
 (struct store-expression expression ())
