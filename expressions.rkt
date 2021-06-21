@@ -266,12 +266,12 @@
 
 (struct call-expression expression ())
 
-(define/contract (make-call name args return-type #:module [mod (current-module)])
+(define/contract (make-call name operands return-type #:module [mod (current-module)])
   ((string? (listof expression?) type?) (#:module module?) . ->* . call-expression?)
   (call-expression
    (BinaryenCall (module-ref mod)
                  name
-                 (map expression-ref args)
+                 (map expression-ref operands)
                  (type-ref return-type))))
 
 ;; ---------------------------------------------------------------------------------------------------
