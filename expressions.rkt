@@ -383,7 +383,7 @@
 (struct block-expression expression ())
 
 (define/contract (make-block name exps type #:module [mod (current-module)])
-  ((string? (listof expression?) type?) (#:module module?) . ->* . block-expression)
+  ((string? (listof expression?) type?) (#:module module?) . ->* . block-expression?)
   (block-expression
    (BinaryenBlock (module-ref mod)
                   str
