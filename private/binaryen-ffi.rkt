@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;5a68060230f6ce77321b2ba7917382a876691a57
+;==;403eccbb4f157a3b23a4d941a7aabddfff1d0f27
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -81,7 +81,7 @@
 (defbinaryen* BinaryenExternalTable    : -> BinaryenExternalKind)
 (defbinaryen* BinaryenExternalMemory   : -> BinaryenExternalKind)
 (defbinaryen* BinaryenExternalGlobal   : -> BinaryenExternalKind)
-(defbinaryen* BinaryenExternalEvent    : -> BinaryenExternalKind)
+(defbinaryen* BinaryenExternalTag      : -> BinaryenExternalKind)
 
 (define BinaryenFeatures _uint32)
 
@@ -764,7 +764,7 @@
   BinaryenModuleRef
   [name : _string]
   BinaryenExpressionRef
-  [catchEvents : (_list i _string)] [BinaryenIndex = (length catchEvents)]
+  [catchTags : (_list i _string)] [BinaryenIndex = (length catchTags)]
   [catchBodies : (_list i BinaryenExpressionRef)] [BinaryenIndex = (length catchBodies)]
   [delegateTarget : _string]
   -> BinaryenExpressionRef)
@@ -1266,17 +1266,17 @@
   (Body BinaryenExpressionRef)
   (DelegateTarget _string))
 
-(defbinaryen* BinaryenTryGetNumCatchEvents : BinaryenExpressionRef ->  BinaryenIndex)
+(defbinaryen* BinaryenTryGetNumCatchTags : BinaryenExpressionRef ->  BinaryenIndex)
 (defbinaryen* BinaryenTryGetNumCatchBodies : BinaryenExpressionRef -> BinaryenIndex)
 
-(defbinaryen* BinaryenTryGetCatchEventAt : BinaryenExpressionRef BinaryenIndex -> _string)
-(defbinaryen* BinaryenTrySetCatchEventAt : BinaryenExpressionRef BinaryenIndex _string -> _void)
+(defbinaryen* BinaryenTryGetCatchTagAt : BinaryenExpressionRef BinaryenIndex -> _string)
+(defbinaryen* BinaryenTrySetCatchTagAt : BinaryenExpressionRef BinaryenIndex _string -> _void)
 
-(defbinaryen* BinaryenTryAppendCatchEvent : BinaryenExpressionRef _string -> BinaryenIndex)
+(defbinaryen* BinaryenTryAppendCatchTag : BinaryenExpressionRef _string -> BinaryenIndex)
 
-(defbinaryen* BinaryenTryInsertCatchEventAt : BinaryenExpressionRef BinaryenIndex _string -> _void)
+(defbinaryen* BinaryenTryInsertCatchTagAt : BinaryenExpressionRef BinaryenIndex _string -> _void)
 
-(defbinaryen* BinaryenTryRemoveCatchEventAt : BinaryenExpressionRef BinaryenIndex -> _string)
+(defbinaryen* BinaryenTryRemoveCatchTagAt : BinaryenExpressionRef BinaryenIndex -> _string)
 
 (defbinaryen* BinaryenTryGetCatchBodyAt : BinaryenExpressionRef BinaryenIndex -> BinaryenExpressionRef)
 (defbinaryen* BinaryenTrySetCatchBodyAt : BinaryenExpressionRef BinaryenIndex BinaryenExpressionRef -> _void)
@@ -1294,7 +1294,7 @@
 ; Throw
 
 (defbinaryen*-get/set-fields Throw
-  (Event _string))
+  (Tag _string))
 
 (defbinaryen* BinaryenThrowGetNumOperands : BinaryenExpressionRef -> BinaryenIndex)
 
@@ -1388,7 +1388,7 @@
 (defbinaryen* BinaryenAddGlobalImport :
   BinaryenModuleRef _string _string _string BinaryenType _stdbool -> _void)
 
-(defbinaryen* BinaryenAddEventImport :
+(defbinaryen* BinaryenAddTagImport :
   BinaryenModuleRef _string _string _string _uint32 BinaryenType BinaryenType -> _void)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1411,7 +1411,7 @@
 (defbinaryen* BinaryenAddGlobalExport :
   BinaryenModuleRef _string _string -> BinaryenExportRef)
 
-(defbinaryen* BinaryenAddEventExport :
+(defbinaryen* BinaryenAddTagExport :
   BinaryenModuleRef _string _string -> BinaryenExportRef)
 
 (defbinaryen* BinaryenGetExport :
@@ -1456,15 +1456,15 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define BinaryenEventRef (_cpointer 'BinaryenEvent))
+(define BinaryenTagRef (_cpointer 'BinaryenTag))
 
-(defbinaryen* BinaryenAddEvent :
-  BinaryenModuleRef _string _uint32 BinaryenType BinaryenType -> BinaryenEventRef)
+(defbinaryen* BinaryenAddTag :
+  BinaryenModuleRef _string _uint32 BinaryenType BinaryenType -> BinaryenTagRef)
 
-(defbinaryen* BinaryenGetEvent :
-  BinaryenModuleRef _string -> BinaryenEventRef)
+(defbinaryen* BinaryenGetTag :
+  BinaryenModuleRef _string -> BinaryenTagRef)
 
-(defbinaryen* BinaryenRemoveEvent :
+(defbinaryen* BinaryenRemoveTag :
   BinaryenModuleRef _string -> _void)
 
 ;; Table
@@ -1764,17 +1764,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
-; EVENT OPERATIONS
+; TAG OPERATIONS
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defbinaryen* BinaryenEventGetName : BinaryenEventRef -> _string)
+(defbinaryen* BinaryenTagGetName : BinaryenTagRef -> _string)
 
-(defbinaryen* BinaryenEventGetAttribute : BinaryenEventRef -> _uint32)
+(defbinaryen* BinaryenTagGetAttribute : BinaryenTagRef -> _uint32)
 
-(defbinaryen* BinaryenEventGetParams : BinaryenEventRef -> BinaryenType)
+(defbinaryen* BinaryenTagGetParams : BinaryenTagRef -> BinaryenType)
 
-(defbinaryen* BinaryenEventGetResults : BinaryenEventRef -> BinaryenType)
+(defbinaryen* BinaryenTagGetResults : BinaryenTagRef -> BinaryenType)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -1788,7 +1788,7 @@
 
 (defbinaryen* BinaryenGlobalImportGetModule : BinaryenGlobalRef -> _string)
 
-(defbinaryen* BinaryenEventImportGetModule : BinaryenEventRef -> _string)
+(defbinaryen* BinaryenTagImportGetModule : BinaryenTagRef -> _string)
 
 (defbinaryen* BinaryenFunctionImportGetBase : BinaryenFunctionRef -> _string)
 
@@ -1796,7 +1796,7 @@
 
 (defbinaryen* BinaryenGlobalImportGetBase : BinaryenGlobalRef -> _string)
 
-(defbinaryen* BinaryenEventImportGetBase : BinaryenEventRef -> _string)
+(defbinaryen* BinaryenTagImportGetBase : BinaryenTagRef -> _string)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
