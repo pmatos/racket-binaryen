@@ -290,6 +290,19 @@
 
 ;; ---------------------------------------------------------------------------------------------------
 
+(struct return-call-expression expression ())
+
+(define/contract (make-return-call target operands return-type #:module [mod (current-module)])
+  ((string? (listof expression?) type?) (#:module module?) . ->* . return-call-expression?)
+  (return-call-expression
+   (BinaryenReturnCall (module-ref mod)
+                       name
+                       (expression-ref target)
+                       (map expression-ref operands)
+                       (type-ref return-type))))
+
+;; ---------------------------------------------------------------------------------------------------
+
 (struct if-expression expression ())
 
 (define/contract (make-if cnd thn els #:module [mod (current-module)])
