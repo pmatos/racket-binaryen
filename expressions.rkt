@@ -276,6 +276,20 @@
 
 ;; ---------------------------------------------------------------------------------------------------
 
+(struct call-indirect-expression expression ())
+
+(define/contract (make-call-indirect table target operands params results #:module [mod (current-module)])
+  ((string? expression? (listof expression?) (listof type?) (listof type?)) (#:module module?) . ->* . call-indirect-expression?)
+  (call-indirect-expression
+   (BinaryenCallIndirect (module-ref mod)
+                         name
+                         (expression-ref target)
+                         (map expression-ref operands)
+                         (map type-ref params)
+                         (map type-ref results))))
+
+;; ---------------------------------------------------------------------------------------------------
+
 (struct if-expression expression ())
 
 (define/contract (make-if cnd thn els #:module [mod (current-module)])
@@ -353,6 +367,38 @@
 
 ;; ---------------------------------------------------------------------------------------------------
 
+(struct block-expression expression ())
+
+(define/contract (make-block name exps type #:module [mod (current-module)])
+  ((string? (listof expression?) type?) (#:module module?) . ->* . block-expression)
+  (block-expression
+   (BinaryenBlock (module-ref mod)
+                  str
+                  exps
+                  type)))
+
+(define/contract (block-name blk)
+  (block-expression? . -> . string?)
+  (BinaryenBlockGetName (block-expression-ref blk)))
+
+(define/contract (set-block-name! blk name)
+  (block-expression? string? . -> . void?)
+  (BinaryenBlockSetName (block-expression-ref blk) name))
+
+(define/contract (block-children-count blk)
+  (block-expression? . -> . nonnegative-exact-integer?)
+  (BinaryenBlockGetNumChildren (block-expression-ref blk)))
+
+(define/contract (block-children-ref blk idx)
+  (block-expression? nonnegative-exact-integer? . -> . expression?)
+  (expression (BinaryenBlockGetChildAt (block-expression-ref blk) idx)))
+
+(define/contract (block-children-append blk chd)
+  (block-expression? expression? . -> . nonnegative-exact-integer?)
+  (BinaryenBlockAppendChild (block-expression-ref blk) (expression-ref chd)))
+
+
+;; ---------------------------------------------------------------------------------------------------
 
 (module+ test
 
