@@ -454,9 +454,49 @@
   (load-expression? . -> . boolean?)
   (BinaryenLoadIsAtomic (expression-ref ld)))
 
-(define/contract (set-load-atomic! ld is-atomic)
+(define/contract (set-load-atomic! ld atomic?)
   (load-expression? boolean? . -> . void?)
-  (BinaryenLoadSetAtomic ld is-atomic))
+  (BinaryenLoadSetAtomic (expression-ref ld) atomic?))
+
+(define/contract (load-signed? ld)
+  (load-expression? . -> . boolean?)
+  (BinaryenLoadIsSigned (expression-ref ld)))
+
+(define/contract (set-load-signed! ld signed?)
+  (load-expression? boolean? . -> . void?)
+  (BinaryenLoadSetSigned (expression-ref ld) signed?))
+
+(define/contract (load-offset ld)
+  (load-expression? . -> . nonnegative-exact-integer?)
+  (BinaryenLoadGetOffset (expression-ref ld)))
+
+(define/contract (set-load-offset! ld offset)
+  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (BinaryenLoadSetOffset (expression-ref ld) offset))
+
+(define/contract (load-bytes ld)
+  (load-expression? . -> . nonnegative-exact-integer?)
+  (BinaryenLoadGetBytes (expression-ref ld)))
+
+(define/contract (set-load-bytes! ld bytes)
+  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (BinaryenLoadSetBytes (expression-ref ld) bytes))
+
+(define/contract (load-align ld)
+  (load-expression? . -> . nonnegative-exact-integer?)
+  (BinaryenLoadGetAlign (expression-ref ld)))
+
+(define/contract (set-load-align! ld align)
+  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (BinaryenLoadSetAlign (expression-ref ld) align))
+
+(define/contract (load-ptr ld)
+  (load-expression? . -> . expression?)
+  (expression (BinaryenLoadGetPtr (expression-ref ld))))
+
+(define/contract (set-load-ptr! ld ptr)
+  (load-expression? expression? . -> . void?)
+  (BinaryenLoadSetPtr (expression-ref ld) (expression-ref ptr)))
 
 ;; ---------------------------------------------------------------------------------------------------
 
