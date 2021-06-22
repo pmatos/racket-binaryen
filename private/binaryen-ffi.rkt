@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;403eccbb4f157a3b23a4d941a7aabddfff1d0f27
+;==;d1379d753cd657fd90c234b6d0515c92bfd06161
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -1389,7 +1389,7 @@
   BinaryenModuleRef _string _string _string BinaryenType _stdbool -> _void)
 
 (defbinaryen* BinaryenAddTagImport :
-  BinaryenModuleRef _string _string _string _uint32 BinaryenType BinaryenType -> _void)
+  BinaryenModuleRef _string _string _string BinaryenType BinaryenType -> _void)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -1459,7 +1459,7 @@
 (define BinaryenTagRef (_cpointer 'BinaryenTag))
 
 (defbinaryen* BinaryenAddTag :
-  BinaryenModuleRef _string _uint32 BinaryenType BinaryenType -> BinaryenTagRef)
+  BinaryenModuleRef _string BinaryenType BinaryenType -> BinaryenTagRef)
 
 (defbinaryen* BinaryenGetTag :
   BinaryenModuleRef _string -> BinaryenTagRef)
@@ -1769,8 +1769,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defbinaryen* BinaryenTagGetName : BinaryenTagRef -> _string)
-
-(defbinaryen* BinaryenTagGetAttribute : BinaryenTagRef -> _uint32)
 
 (defbinaryen* BinaryenTagGetParams : BinaryenTagRef -> BinaryenType)
 
