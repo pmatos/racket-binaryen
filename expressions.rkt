@@ -309,7 +309,7 @@
   ((string? expression? (listof expression?) (listof type?) (listof type?)) (#:module module?) . ->* . call-indirect-expression?)
   (call-indirect-expression
    (BinaryenCallIndirect (module-ref mod)
-                         name
+                         table
                          (expression-ref target)
                          (map expression-ref operands)
                          (map type-ref params)
@@ -323,7 +323,7 @@
   ((string? (listof expression?) type?) (#:module module?) . ->* . return-call-expression?)
   (return-call-expression
    (BinaryenReturnCall (module-ref mod)
-                       name
+                       target
                        (expression-ref target)
                        (map expression-ref operands)
                        (type-ref return-type))))
@@ -413,36 +413,36 @@
   ((string? (listof expression?) type?) (#:module module?) . ->* . block-expression?)
   (block-expression
    (BinaryenBlock (module-ref mod)
-                  str
+                  name
                   exps
                   type)))
 
 (define/contract (block-name blk)
   (block-expression? . -> . string?)
-  (BinaryenBlockGetName (block-expression-ref blk)))
+  (BinaryenBlockGetName (expression-ref blk)))
 
 (define/contract (set-block-name! blk name)
   (block-expression? string? . -> . void?)
-  (BinaryenBlockSetName (block-expression-ref blk) name))
+  (BinaryenBlockSetName (expression-ref blk) name))
 
 (define/contract (block-children-count blk)
-  (block-expression? . -> . nonnegative-exact-integer?)
-  (BinaryenBlockGetNumChildren (block-expression-ref blk)))
+  (block-expression? . -> . exact-nonnegative-integer?)
+  (BinaryenBlockGetNumChildren (expression-ref blk)))
 
 (define/contract (block-children-ref blk idx)
-  (block-expression? nonnegative-exact-integer? . -> . expression?)
-  (expression (BinaryenBlockGetChildAt (block-expression-ref blk) idx)))
+  (block-expression? exact-nonnegative-integer? . -> . expression?)
+  (expression (BinaryenBlockGetChildAt (expression-ref blk) idx)))
 
 (define/contract (block-children-append blk chd)
-  (block-expression? expression? . -> . nonnegative-exact-integer?)
-  (BinaryenBlockAppendChild (block-expression-ref blk) (expression-ref chd)))
+  (block-expression? expression? . -> . exact-nonnegative-integer?)
+  (BinaryenBlockAppendChild (expression-ref blk) (expression-ref chd)))
 
 ;; ---------------------------------------------------------------------------------------------------
 
 (struct load-expression expression ())
 
 (define/contract (make-load bytes signed? offset align type ptr #:module [mod (current-module)])
-  ((nonnegative-exact-integer? boolean? nonnegative-exact-integer? nonnegative-exact-integer? type? expression?) (#:module module?) . -> . load-expression?)
+  ((exact-nonnegative-integer? boolean? exact-nonnegative-integer? exact-nonnegative-integer? type? expression?) (#:module module?) . ->* . load-expression?)
   (load-expression
    (BinaryenLoad (module-ref mod)
                  bytes signed? offset align
@@ -467,27 +467,27 @@
   (BinaryenLoadSetSigned (expression-ref ld) signed?))
 
 (define/contract (load-offset ld)
-  (load-expression? . -> . nonnegative-exact-integer?)
+  (load-expression? . -> . exact-nonnegative-integer?)
   (BinaryenLoadGetOffset (expression-ref ld)))
 
 (define/contract (set-load-offset! ld offset)
-  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (load-expression? exact-nonnegative-integer? . -> . void?)
   (BinaryenLoadSetOffset (expression-ref ld) offset))
 
 (define/contract (load-bytes ld)
-  (load-expression? . -> . nonnegative-exact-integer?)
+  (load-expression? . -> . exact-nonnegative-integer?)
   (BinaryenLoadGetBytes (expression-ref ld)))
 
 (define/contract (set-load-bytes! ld bytes)
-  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (load-expression? exact-nonnegative-integer? . -> . void?)
   (BinaryenLoadSetBytes (expression-ref ld) bytes))
 
 (define/contract (load-align ld)
-  (load-expression? . -> . nonnegative-exact-integer?)
+  (load-expression? . -> . exact-nonnegative-integer?)
   (BinaryenLoadGetAlign (expression-ref ld)))
 
 (define/contract (set-load-align! ld align)
-  (load-expression? nonnegative-exact-integer? . -> . void?)
+  (load-expression? exact-nonnegative-integer? . -> . void?)
   (BinaryenLoadSetAlign (expression-ref ld) align))
 
 (define/contract (load-ptr ld)
@@ -503,7 +503,7 @@
 (struct store-expression expression ())
 
 (define/contract (make-store bytes offset align ptr value type #:module [mod (current-module)])
-  ((nonnegative-exact-integer? nonnegative-exact-integer? nonnegative-exact-integer? expression? expression?) (#:module module?) . -> . store-expression?)
+  ((exact-nonnegative-integer? exact-nonnegative-integer? exact-nonnegative-integer? expression? expression? type?) (#:module module?) . ->* . store-expression?)
   (store-expression
    (BinaryenStore (module-ref mod)
                   bytes offset align
