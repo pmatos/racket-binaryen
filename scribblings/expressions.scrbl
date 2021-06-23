@@ -37,7 +37,7 @@ A @deftech{binary expression} is an @tech{expression} that operates on two value
 
 A @deftech{load expression} is an @tech{expression} that loads a value from memory.
 
-@deftech[(make-load [bytes exact-nonnegative-integer?]
+@defproc[(make-load [bytes exact-nonnegative-integer?]
                     [signed? boolean?]
                     [offset exact-nonnegative-integer?]
                     [align exact-nonnegative-integer?]
@@ -47,9 +47,9 @@ A @deftech{load expression} is an @tech{expression} that loads a value from memo
          load-expression?]{
  Creates a @tech{load expression} that represents the load of @racket[bytes] bytes from memory. The expression @racket[ptr] evaluates to a value through which to access memory, and the loaded value is specified as having type @racket[type].}
 
-@deftech[(load-atomic? [ld load-expression?]) boolean?]{
+@defproc[(load-atomic? [ld load-expression?]) boolean?]{
  Returns @racket[#true] if the @tech{load-expression} @racket[ld] is atomic, @racket[#false] otherwise.}
 
-@deftech[(set-load-atomic! [ld load-expression?] [atomic? boolean]) void?]{
+@defproc[(set-load-atomic! [ld load-expression?] [atomic? boolean]) void?]{
  Turns the @tech{load expression} @racket[ld] into an atomic load conditional on the value of @racket[atomic?].}
  
