@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;43c04435356b025884cb778d13496c50f473a1d2
+;==;ed3426628f4d5402cc6a5e7f20a7c9f2ff517c09
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -99,6 +99,7 @@
 (defbinaryen* BinaryenFeatureGC                 : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureMemory64           : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureTypedFunctionReferences : -> BinaryenFeatures)
+(defbinaryen* BinaryenFeatureRelaxedSIMD        : -> BinaryenFeatures)
 (defbinaryen* BinaryenFeatureAll                : -> BinaryenFeatures)
 
 (define BinaryenModuleRef (_cpointer 'BinaryenModuleRef))
@@ -758,6 +759,18 @@
   BinaryenModuleRef BinaryenExpressionRef BinaryenExpressionRef
   -> BinaryenExpressionRef)
 
+(defbinaryen* BinaryenTableGet :
+  BinaryenModuleRef _string BinaryenExpressionRef BinaryenType
+  -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenTableSet :
+  BinaryenModuleRef _string BinaryenExpressionRef BinaryenExpressionRef
+  -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenTableSize :
+  BinaryenModuleRef _string
+  -> BinaryenExpressionRef)
+
 ; TODO
 ; Try: name can be NULL. delegateTarget should be NULL in try-catch.
 (defbinaryen* BinaryenTry :
@@ -989,6 +1002,36 @@
 (defbinaryen* BinaryenGlobalSetGetValue : BinaryenExpressionRef -> BinaryenExpressionRef)
 
 (defbinaryen* BinaryenGlobalSetSetValue : BinaryenExpressionRef BinaryenExpressionRef -> _void)
+
+; TableGet
+
+(defbinaryen* BinaryenTableGetGetTable : BinaryenExpressionRef -> _string)
+
+(defbinaryen* BinaryenTableGetSetTable : BinaryenExpressionRef _string -> _void)
+
+(defbinaryen* BinaryenTableGetGetIndex : BinaryenExpressionRef -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenTableGetSetIndex : BinaryenExpressionRef BinaryenExpressionRef -> _void)
+
+; TableSet
+
+(defbinaryen* BinaryenTableSetGetTable : BinaryenExpressionRef -> _string)
+
+(defbinaryen* BinaryenTableSetSetTable : BinaryenExpressionRef _string -> _void)
+
+(defbinaryen* BinaryenTableSetGetIndex : BinaryenExpressionRef -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenTableSetSetIndex : BinaryenExpressionRef BinaryenExpressionRef -> _void)
+
+(defbinaryen* BinaryenTableSetGetValue : BinaryenExpressionRef -> BinaryenExpressionRef)
+
+(defbinaryen* BinaryenTableSetSetValue : BinaryenExpressionRef BinaryenExpressionRef -> _void)
+
+; TableSize
+
+(defbinaryen* BinaryenTableSizeGetTable : BinaryenExpressionRef -> _string)
+
+(defbinaryen* BinaryenTableSizeSetTable : BinaryenExpressionRef _string -> _void)
 
 ; MemoryGrow
 
@@ -1566,6 +1609,8 @@
 
 (defbinaryen* BinaryenModuleOptimize : BinaryenModuleRef -> _void)
 
+(defbinaryen* BinaryenModuleUpdateMaps : BinaryenModuleRef -> _void)
+
 (defbinaryen* BinaryenGetOptimizeLevel : -> _int)
 
 (defbinaryen* BinaryenSetOptimizeLevel : _int -> _void)
@@ -1840,6 +1885,8 @@
 (defbinaryen* BinaryenSideEffectWritesGlobal : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectReadsMemory : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectWritesMemory : -> BinaryenSideEffects)
+(defbinaryen* BinaryenSideEffectReadsTable : -> BinaryenSideEffects)
+(defbinaryen* BinaryenSideEffectWritesTable : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectImplicitTrap : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectTrapsNeverHappen : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectIsAtomic : -> BinaryenSideEffects)
@@ -1847,7 +1894,7 @@
 (defbinaryen* BinaryenSideEffectDanglingPop : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectAny : -> BinaryenSideEffects)
 
-(defbinaryen* BinaryenExpressionGetSideEffects : BinaryenExpressionRef BinaryenFeatures -> BinaryenSideEffects)
+(defbinaryen* BinaryenExpressionGetSideEffects : BinaryenExpressionRef BinaryenModuleRef -> BinaryenSideEffects)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
