@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;d1379d753cd657fd90c234b6d0515c92bfd06161
+;==;43c04435356b025884cb778d13496c50f473a1d2
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -1471,7 +1471,7 @@
 (define BinaryenTableRef (_cpointer 'BinaryenTable))
 
 (defbinaryen* BinaryenAddTable :
-  BinaryenModuleRef _string BinaryenIndex BinaryenIndex -> BinaryenTableRef)
+  BinaryenModuleRef _string BinaryenIndex BinaryenIndex BinaryenType -> BinaryenTableRef)
 
 (defbinaryen* BinaryenRemoveTable :
   BinaryenModuleRef _string -> _void)
@@ -1581,6 +1581,10 @@
 (defbinaryen* BinaryenGetLowMemoryUnused : -> _stdbool)
 
 (defbinaryen* BinaryenSetLowMemoryUnused : _stdbool -> _void)
+
+(defbinaryen* BinaryenGetZeroFilledMemory : -> _stdbool)
+
+(defbinaryen* BinaryenSetZeroFilledMemory : _stdbool -> _void)
 
 (defbinaryen* BinaryenGetFastMath : -> _stdbool)
 
@@ -1837,6 +1841,7 @@
 (defbinaryen* BinaryenSideEffectReadsMemory : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectWritesMemory : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectImplicitTrap : -> BinaryenSideEffects)
+(defbinaryen* BinaryenSideEffectTrapsNeverHappen : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectIsAtomic : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectThrows : -> BinaryenSideEffects)
 (defbinaryen* BinaryenSideEffectDanglingPop : -> BinaryenSideEffects)
