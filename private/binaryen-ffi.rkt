@@ -13,7 +13,7 @@
 
 ; !DO NOT REMOVE OR EDIT THE FOLLOWING LINES!
 ; Based on binaryen-c.h with sha:
-;==;ed3426628f4d5402cc6a5e7f20a7c9f2ff517c09
+;==;e151552a7ee28b3948c1104ff8783a37c7db1273
 
 ;; WARNING: Does not include deprecated bindings!
 
@@ -771,6 +771,10 @@
   BinaryenModuleRef _string
   -> BinaryenExpressionRef)
 
+(defbinaryen* BinaryenTableGrow :
+  BinaryenModuleRef _string BinaryenExpressionRef BinaryenExpressionRef 
+  -> BinaryenExpressionRef)
+
 ; TODO
 ; Try: name can be NULL. delegateTarget should be NULL in try-catch.
 (defbinaryen* BinaryenTry :
@@ -1032,6 +1036,13 @@
 (defbinaryen* BinaryenTableSizeGetTable : BinaryenExpressionRef -> _string)
 
 (defbinaryen* BinaryenTableSizeSetTable : BinaryenExpressionRef _string -> _void)
+
+; TableGrow
+
+(defbinaryen*-get/set-fields TableGrow
+  (Table _string)
+  (Value BinaryenExpressionRef)
+  (Delta BinaryenExpressionRef))
 
 ; MemoryGrow
 
